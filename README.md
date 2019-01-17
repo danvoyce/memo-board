@@ -2,7 +2,7 @@
 
 This simple app allows the user create, update and delete ideas. There is no API, however the code has been written in a way so it could be adapted to work with an API without much effort.
 
-There are a few simple integration tests.
+There are a few simple integration tests. These can be found in `src/App.test.tsx`
 
 It's been written in TypeScript, however this is my first TypeScript project, so I'm fairly sure it's far from perfect.
 

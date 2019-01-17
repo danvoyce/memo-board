@@ -2,29 +2,7 @@ import React from "react";
 import { mount } from "enzyme";
 import App from "./App";
 
-it("updates the `ideasData` when an idea has been updated", () => {
-  const wrapper = mount(<App />);
-
-  const originalTitle = "Come up with more ideas!";
-  const newTitle = "Come up with more BETTER ideas!";
-
-  expect(wrapper.state().ideasData[1].title).toBe(originalTitle);
-
-  const secondItem = wrapper.find("IdeaItem").at(1);
-  const secondItemTitleField = secondItem.find('[data-test="title-field"]');
-
-  secondItemTitleField.props().onChange({
-    target: {
-      value: newTitle
-    }
-  });
-
-  secondItemTitleField.props().onBlur();
-
-  expect(wrapper.state().ideasData[1].title).toBe(newTitle);
-});
-
-it("adds a new blank idea when the add button is clicked and autofocuses the title field", () => {
+it("CREATES a new blank idea when the add button is clicked and autofocuses the title field", () => {
   const wrapper = mount(<App />);
 
   expect(wrapper.find("IdeaItem").length).toBe(2);
@@ -46,7 +24,29 @@ it("adds a new blank idea when the add button is clicked and autofocuses the tit
   expect(titleField.props().autoFocus).toBe(true);
 });
 
-it("deletes an idea when the delete button is clicked", () => {
+it("UPDATES the `ideasData` when an idea has been updated", () => {
+  const wrapper = mount(<App />);
+
+  const originalTitle = "Come up with more ideas!";
+  const newTitle = "Come up with more BETTER ideas!";
+
+  expect(wrapper.state().ideasData[1].title).toBe(originalTitle);
+
+  const secondItem = wrapper.find("IdeaItem").at(1);
+  const secondItemTitleField = secondItem.find('[data-test="title-field"]');
+
+  secondItemTitleField.props().onChange({
+    target: {
+      value: newTitle
+    }
+  });
+
+  secondItemTitleField.props().onBlur();
+
+  expect(wrapper.state().ideasData[1].title).toBe(newTitle);
+});
+
+it("DELETES an idea when the delete button is clicked", () => {
   const wrapper = mount(<App />);
 
   expect(wrapper.find("IdeaItem").length).toBe(2);
