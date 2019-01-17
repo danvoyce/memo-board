@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import IdeasList from "./components/IdeasList/IdeasList";
-import { fetchInitialData } from "./api/api";
+import ideasData from "./api/ideas.fixture";
 
 import "./App.css";
 
@@ -20,9 +20,10 @@ class App extends Component<{}, AppState> {
   constructor(props: any) {
     super(props);
 
-    const ideasData = fetchInitialData();
+    // GET ideas
+    // On success...
     this.state = {
-      ideasData
+      ideasData: ideasData
     };
   }
 
