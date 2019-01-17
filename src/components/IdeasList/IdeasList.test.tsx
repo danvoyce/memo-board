@@ -4,7 +4,7 @@ import IdeasList from "./IdeasList";
 import ideasData from "../../api/ideas.fixture";
 
 it("renders a list of ideas", () => {
-  const wrapper = mount(<IdeasList data={ideasData} />);
+  const wrapper = mount(<IdeasList data={ideasData} onUpdate={() => {}} />);
 
   const list = wrapper.find('[data-test="ideas-list"]');
 

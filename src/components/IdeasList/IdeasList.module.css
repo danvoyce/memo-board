@@ -11,12 +11,7 @@
   width: 150px;
   height: 150px;
   margin: 10px;
-  padding: 10px;
   color: #000;
-}
-
-.list li:before {
-  content: "\200B"; /* add zero-width space. See: https://unfetteredthoughts.net/2017/09/26/voiceover-and-list-style-type-none/ */
 }
 
 .list li:nth-child(1n) {
@@ -37,4 +32,38 @@
 
 .list li:nth-child(5n) {
   background: #ff9900;
+}
+
+.list li fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  height: 100%;
+}
+
+.list li fieldset textarea {
+  font-size: 12px;
+  border: 0;
+  padding: 5px;
+  margin: 5px;
+  display: block;
+  border: 1px solid transparent;
+  width: calc(100% - 12px);
+  background: transparent;
+  resize: none;
+}
+
+.list li fieldset textarea:focus {
+  border: 1px solid #8c8c8c;
+  outline: 0;
+}
+
+.titleField {
+  font-weight: bold;
+  height: calc(30% - 10px);
+}
+
+.bodyField {
+  height: calc(70% - 10px);
 }
