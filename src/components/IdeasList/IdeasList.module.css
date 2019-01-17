@@ -1,0 +1,40 @@
+.list {
+  padding: 10px;
+  margin: 0;
+}
+
+.list li {
+  display: inline-block;
+  vertical-align: top;
+  list-style-type: none;
+  background: #ab0d86;
+  width: 150px;
+  height: 150px;
+  margin: 10px;
+  padding: 10px;
+  color: #000;
+}
+
+.list li:before {
+  content: "\200B"; /* add zero-width space. See: https://unfetteredthoughts.net/2017/09/26/voiceover-and-list-style-type-none/ */
+}
+
+.list li:nth-child(1n) {
+  background: #ffe107;
+}
+
+.list li:nth-child(2n) {
+  background: #47fcba;
+}
+
+.list li:nth-child(3n) {
+  background: #f03580;
+}
+
+.list li:nth-child(4n) {
+  background: #26bdff;
+}
+
+.list li:nth-child(5n) {
+  background: #ff9900;
+}

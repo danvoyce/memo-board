@@ -1,27 +1,34 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import IdeasList from "./components/IdeasList/IdeasList";
+import { fetchInitialData } from "./api/api";
 
-class App extends Component {
+import "./App.css";
+
+interface EnumIdeaItem {
+  id: number;
+  title: string;
+  body: string;
+  created_date: string;
+}
+
+interface EnumIdeaItems extends Array<EnumIdeaItem> {}
+interface AppState {
+  ideasData: EnumIdeaItems;
+}
+
+class App extends Component<{}, AppState> {
+  constructor(props: any) {
+    super(props);
+
+    const ideasData = fetchInitialData();
+    this.state = {
+      ideasData
+    };
+  }
+
   render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+    const { ideasData } = this.state;
+    return <IdeasList data={ideasData} />;
   }
 }
 
