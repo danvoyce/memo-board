@@ -45,3 +45,30 @@ it("adds a new blank idea when the add button is clicked and autofocuses the tit
   expect(bodyField.props().value).toBeFalsy();
   expect(titleField.props().autoFocus).toBe(true);
 });
+
+it("deletes an idea when the delete button is clicked", () => {
+  const wrapper = mount(<App />);
+
+  expect(wrapper.find("IdeaItem").length).toBe(2);
+  expect(
+    wrapper
+      .find("IdeaItem")
+      .at(0)
+      .props().title
+  ).toBe("Learn TypeScript");
+
+  const button = wrapper.find('[data-test="delete-button"]').at(0);
+
+  button.props().onClick();
+
+  wrapper.update();
+
+  expect(wrapper.find("IdeaItem").length).toBe(1);
+
+  expect(
+    wrapper
+      .find("IdeaItem")
+      .at(0)
+      .props().title
+  ).toBe("Come up with more ideas!");
+});

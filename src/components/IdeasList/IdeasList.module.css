@@ -39,13 +39,14 @@
   padding: 0;
   margin: 0;
   background: transparent;
+  position: relative;
   height: 100%;
 }
 
 .list li fieldset textarea {
   font-size: 12px;
   border: 0;
-  padding: 5px;
+  padding: 5px 15px 5px 5px;
   margin: 5px;
   display: block;
   border: 1px solid transparent;
@@ -78,6 +79,11 @@
 }
 
 .plusIcon {
+  background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNzggNzguMyIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNzggNzguMzsiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxnPjxyZWN0IHg9IjM3LjMiIHk9IjAuMiIgd2lkdGg9IjMiIGhlaWdodD0iNzgiLz48cmVjdCB4PSItMC4yIiB5PSIzNy43IiB3aWR0aD0iNzgiIGhlaWdodD0iMyIvPjwvZz48L3N2Zz4=);
+}
+
+.addButtonIcon {
+  composes: plusIcon;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -85,9 +91,30 @@
   width: 60px;
   height: 60px;
   opacity: 0.3;
-  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNzggNzguMyIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNzggNzguMzsiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxnPjxyZWN0IHg9IjM3LjMiIHk9IjAuMiIgd2lkdGg9IjMiIGhlaWdodD0iNzgiLz48cmVjdCB4PSItMC4yIiB5PSIzNy43IiB3aWR0aD0iNzgiIGhlaWdodD0iMyIvPjwvZz48L3N2Zz4=);
 }
 
-.addButton:hover .plusIcon {
+.addButton:hover .addButtonIcon {
+  opacity: 1;
+}
+
+.deleteButton {
+  composes: plusIcon;
+  position: absolute;
+  border: 0;
+  top: 5px;
+  right: 5px;
+  width: 15px;
+  height: 15px;
+  transform: rotate(45deg);
+  cursor: pointer;
+  opacity: 0.5;
+  display: none;
+}
+
+.list li:hover .deleteButton {
+  display: block;
+}
+
+.deleteButton:hover {
   opacity: 1;
 }

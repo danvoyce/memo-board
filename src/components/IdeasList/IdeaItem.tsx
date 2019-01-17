@@ -11,6 +11,7 @@ interface props {
   body: string;
   shouldAutoFocus: boolean;
   onUpdate: ((values: state) => void);
+  onDeleteIdea: (() => void);
 }
 
 class IdeaItem extends Component<props, state> {
@@ -33,7 +34,6 @@ class IdeaItem extends Component<props, state> {
 
   saveValues = () => {
     const { title, body } = this.state;
-
     this.props.onUpdate({ title, body });
   };
 
@@ -58,6 +58,12 @@ class IdeaItem extends Component<props, state> {
           maxLength={140}
           data-test="body-field"
           placeholder="Add body..."
+        />
+        <button
+          title="Delete idea"
+          className={styles.deleteButton}
+          onClick={this.props.onDeleteIdea}
+          data-test="delete-button"
         />
       </fieldset>
     );

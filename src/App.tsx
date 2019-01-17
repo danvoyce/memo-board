@@ -59,6 +59,21 @@ class App extends Component<{}, AppState> {
     });
   };
 
+  deleteIdea = (selectedId: string) => {
+    // POST idea/delete
+    // On success...
+    const { ideasData } = this.state;
+    const cloned = ideasData.slice(0);
+    const index = cloned.findIndex(({ id }) => id === selectedId);
+
+    if (index > -1) {
+      cloned.splice(index, 1);
+      this.setState({
+        ideasData: cloned
+      });
+    }
+  };
+
   render() {
     const { ideasData } = this.state;
     return (
@@ -66,6 +81,7 @@ class App extends Component<{}, AppState> {
         data={ideasData}
         onUpdate={this.handleUpdate}
         onAddNewIdea={this.addNewIdea}
+        onDeleteIdea={this.deleteIdea}
       />
     );
   }

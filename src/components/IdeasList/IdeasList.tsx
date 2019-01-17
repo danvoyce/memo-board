@@ -15,11 +15,16 @@ interface props {
   data: EnumIdeaItems;
   onUpdate: ((values: EnumIdeaItem) => void);
   onAddNewIdea: (() => void);
+  onDeleteIdea: ((id: string) => void);
 }
 
 class IdeasList extends Component<props> {
   handleUpdate(values: any) {
     this.props.onUpdate(values);
+  }
+
+  handleDeleteIdea(id: string) {
+    this.props.onDeleteIdea(id);
   }
 
   renderAddNewItemButton() {
@@ -31,7 +36,7 @@ class IdeasList extends Component<props> {
           title="Add a new idea"
           data-test="add-button"
         >
-          <span className={styles.plusIcon} />
+          <span className={styles.addButtonIcon} />
         </button>
       </li>
     );
@@ -49,6 +54,7 @@ class IdeasList extends Component<props> {
             body={body}
             onUpdate={values => this.handleUpdate({ ...values, id })}
             shouldAutoFocus={shouldAutoFocus}
+            onDeleteIdea={() => this.handleDeleteIdea(id)}
           />
         </li>
       );
