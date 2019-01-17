@@ -8,5 +8,5 @@ it("renders a list of ideas", () => {
 
   const list = wrapper.find('[data-test="ideas-list"]');
 
-  expect(list.children().length).toBe(2);
+  expect(list.children().length).toBe(3);
 });

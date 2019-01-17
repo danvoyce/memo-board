@@ -23,3 +23,25 @@ it("updates the `ideasData` when an idea has been updated", () => {
 
   expect(wrapper.state().ideasData[1].title).toBe(newTitle);
 });
+
+it("adds a new blank idea when the add button is clicked and autofocuses the title field", () => {
+  const wrapper = mount(<App />);
+
+  expect(wrapper.find("IdeaItem").length).toBe(2);
+
+  const button = wrapper.find('[data-test="add-button"]');
+
+  button.props().onClick();
+
+  wrapper.update();
+
+  expect(wrapper.find("IdeaItem").length).toBe(3);
+
+  const firstItem = wrapper.find("IdeaItem").at(0);
+  const titleField = firstItem.find('[data-test="title-field"]');
+  const bodyField = firstItem.find('[data-test="body-field"]');
+
+  expect(titleField.props().value).toBeFalsy();
+  expect(bodyField.props().value).toBeFalsy();
+  expect(titleField.props().autoFocus).toBe(true);
+});

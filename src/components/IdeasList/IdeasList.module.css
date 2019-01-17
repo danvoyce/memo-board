@@ -67,3 +67,27 @@
 .bodyField {
   height: calc(70% - 10px);
 }
+
+.addButton {
+  position: relative;
+  background: transparent;
+  border: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.plusIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  opacity: 0.3;
+  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNzggNzguMyIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNzggNzguMzsiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxnPjxyZWN0IHg9IjM3LjMiIHk9IjAuMiIgd2lkdGg9IjMiIGhlaWdodD0iNzgiLz48cmVjdCB4PSItMC4yIiB5PSIzNy43IiB3aWR0aD0iNzgiIGhlaWdodD0iMyIvPjwvZz48L3N2Zz4=);
+}
+
+.addButton:hover .plusIcon {
+  opacity: 1;
+}

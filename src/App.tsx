@@ -5,10 +5,10 @@ import { fetchInitialData } from "./api/api";
 import "./App.css";
 
 interface EnumIdeaItem {
-  id: number;
+  id: string;
   title: string;
   body: string;
-  created_date?: string;
+  created_date: string;
 }
 
 interface EnumIdeaItems extends Array<EnumIdeaItem> {}
@@ -42,9 +42,32 @@ class App extends Component<{}, AppState> {
     }
   };
 
+  addNewIdea = () => {
+    // GET ideas/new
+    // On success...
+    const { ideasData } = this.state;
+    const cloned = ideasData.slice(0);
+    cloned.unshift({
+      id: Date.now().toString(),
+      created_date: "",
+      title: "",
+      body: ""
+    });
+
+    this.setState({
+      ideasData: cloned
+    });
+  };
+
   render() {
     const { ideasData } = this.state;
-    return <IdeasList data={ideasData} onUpdate={this.handleUpdate} />;
+    return (
+      <IdeasList
+        data={ideasData}
+        onUpdate={this.handleUpdate}
+        onAddNewIdea={this.addNewIdea}
+      />
+    );
   }
 }
 

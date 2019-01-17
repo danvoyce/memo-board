@@ -9,7 +9,7 @@ interface state {
 interface props {
   title: string;
   body: string;
-  created_date?: string;
+  shouldAutoFocus: boolean;
   onUpdate: ((values: state) => void);
 }
 
@@ -47,6 +47,8 @@ class IdeaItem extends Component<props, state> {
           onBlur={this.saveValues}
           value={title}
           data-test="title-field"
+          autoFocus={this.props.shouldAutoFocus}
+          placeholder="Add title..."
         />
         <textarea
           className={styles.bodyField}
@@ -55,6 +57,7 @@ class IdeaItem extends Component<props, state> {
           value={body}
           maxLength={140}
           data-test="body-field"
+          placeholder="Add body..."
         />
       </fieldset>
     );
