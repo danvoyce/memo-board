@@ -2,15 +2,6 @@ import React, { Component } from "react";
 import IdeaItem from "./IdeaItem";
 import styles from "./IdeasList.module.css";
 
-interface EnumIdeaItem {
-  id: string;
-  title: string;
-  body: string;
-  created_date: string;
-}
-
-interface EnumIdeaItems extends Array<EnumIdeaItem> {}
-
 interface props {
   data: EnumIdeaItems;
   onUpdate: ((values: EnumIdeaItem) => void);
@@ -19,7 +10,7 @@ interface props {
 }
 
 class IdeasList extends Component<props> {
-  handleUpdate(values: any) {
+  handleUpdate(values: EnumIdeaItem) {
     this.props.onUpdate(values);
   }
 
@@ -52,7 +43,9 @@ class IdeasList extends Component<props> {
           <IdeaItem
             title={title}
             body={body}
-            onUpdate={values => this.handleUpdate({ ...values, id })}
+            id={id}
+            created_date={created_date}
+            onUpdate={values => this.handleUpdate(values)}
             shouldAutoFocus={shouldAutoFocus}
             onDeleteIdea={() => this.handleDeleteIdea(id)}
           />

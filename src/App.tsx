@@ -4,14 +4,17 @@ import ideasData from "./api/ideas.fixture";
 
 import "./App.css";
 
-interface EnumIdeaItem {
-  id: string;
-  title: string;
-  body: string;
-  created_date: string;
+declare global {
+  interface EnumIdeaItem {
+    id: string;
+    title: string;
+    body: string;
+    created_date: string;
+  }
+
+  interface EnumIdeaItems extends Array<EnumIdeaItem> {}
 }
 
-interface EnumIdeaItems extends Array<EnumIdeaItem> {}
 interface AppState {
   ideasData: EnumIdeaItems;
 }
@@ -50,7 +53,7 @@ class App extends Component<{}, AppState> {
     const cloned = ideasData.slice(0);
     cloned.unshift({
       id: Date.now().toString(),
-      created_date: "",
+      created_date: new Date().toISOString(),
       title: "",
       body: ""
     });

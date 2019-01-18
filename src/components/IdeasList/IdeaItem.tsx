@@ -1,40 +1,59 @@
 import React, { Component } from "react";
 import styles from "./IdeasList.module.css";
 
-interface state {
-  title?: string;
-  body?: string;
-}
-
-interface props {
+interface Props {
   title: string;
   body: string;
+  id: string;
+  created_date: string;
   shouldAutoFocus: boolean;
-  onUpdate: ((values: state) => void);
+  onUpdate: ((values: EnumIdeaItem) => void);
   onDeleteIdea: (() => void);
 }
 
-class IdeaItem extends Component<props, state> {
-  constructor(props: any) {
+enum KeyTypes {
+  title,
+  body,
+  id,
+  created_date
+}
+
+class IdeaItem extends Component<Props, EnumIdeaItem> {
+  constructor(props: Props) {
     super(props);
 
+    const { title, body, id, created_date } = props;
+
     this.state = {
-      title: props.title,
-      body: props.body
+      title,
+      body,
+      id,
+      created_date
     };
   }
 
-  handleUpdateState(e = { target: { value: "" } }, key: string) {
+  handleUpdateState(e: any, key: string) {
     const { value } = e.target;
 
-    this.setState({
-      [key]: value
-    });
+    const newState = Object.assign({}, this.state, { [key]: value });
+
+    this.setState(newState);
+
+    /* Note:
+      TypeScript was freaking out when attempting to do the below `this.setState({...})`.
+      I believe it doesn't like that we can set the key to an unknown string,
+      which then could potentially break the `EnumIdeaItem` interface.
+      So I resorted to the above, although this still allows an unknown string as the key 🤨
+    */
+
+    // this.setState({
+    //   [key]: value
+    // });
   }
 
   saveValues = () => {
-    const { title, body } = this.state;
-    this.props.onUpdate({ title, body });
+    const { title, body, id, created_date } = this.state;
+    this.props.onUpdate({ title, body, id, created_date });
   };
 
   render() {
