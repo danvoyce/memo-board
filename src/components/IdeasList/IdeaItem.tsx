@@ -32,8 +32,8 @@ class IdeaItem extends Component<Props, EnumIdeaItem> {
     };
   }
 
-  handleUpdateState(e: any, key: string) {
-    const { value } = e.target;
+  handleUpdateState({ target }: { target: { value: string } }, key: string) {
+    const { value } = target;
 
     const newState = Object.assign({}, this.state, { [key]: value });
 
