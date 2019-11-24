@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import IdeaItem from './IdeaItem';
 import styles from './IdeasList.module.css';
 
@@ -9,21 +9,26 @@ interface props {
   onDeleteIdea: (id: string) => void;
 }
 
-class IdeasList extends Component<props> {
-  handleUpdate(values: EnumIdeaItem) {
-    this.props.onUpdate(values);
-  }
+const IdeasList = ({
+  data = [],
+  onUpdate,
+  onDeleteIdea,
+  onAddNewIdea
+}: props) => {
+  const handleUpdate = (values: EnumIdeaItem) => {
+    onUpdate(values);
+  };
 
-  handleDeleteIdea(id: string) {
-    this.props.onDeleteIdea(id);
-  }
+  const handleDeleteIdea = (id: string) => {
+    onDeleteIdea(id);
+  };
 
-  renderAddNewItemButton() {
+  const renderAddNewItemButton = () => {
     return (
       <li key="addBtn">
         <button
           className={styles.addButton}
-          onClick={this.props.onAddNewIdea}
+          onClick={onAddNewIdea}
           title="Add a new idea"
           data-testid="add-button"
         >
@@ -31,12 +36,10 @@ class IdeasList extends Component<props> {
         </button>
       </li>
     );
-  }
+  };
 
-  render() {
-    const { data = [] } = this.props;
-
-    const listElements = data.map(({ id, title, body, created_date }, i) => {
+  const renderListItems = () => {
+    const listItems = data.map(({ id, title, body, created_date }, i) => {
       const shouldAutoFocus = !title && i === 0;
       return (
         <li key={id} data-testid="idea-item">
@@ -45,18 +48,20 @@ class IdeasList extends Component<props> {
             body={body}
             id={id}
             created_date={created_date}
-            onUpdate={values => this.handleUpdate(values)}
+            onUpdate={values => handleUpdate(values)}
             shouldAutoFocus={shouldAutoFocus}
-            onDeleteIdea={() => this.handleDeleteIdea(id)}
+            onDeleteIdea={() => handleDeleteIdea(id)}
           />
         </li>
       );
     });
 
-    listElements.unshift(this.renderAddNewItemButton());
+    listItems.unshift(renderAddNewItemButton());
 
-    return <ol className={styles.list}>{listElements}</ol>;
-  }
-}
+    return listItems;
+  };
+
+  return <ol className={styles.list}>{renderListItems()}</ol>;
+};
 
 export default IdeasList;
