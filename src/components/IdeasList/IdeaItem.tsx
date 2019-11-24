@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import styles from "./IdeasList.module.css";
+import React, { Component } from 'react';
+import styles from './IdeasList.module.css';
 
 interface Props {
   title: string;
@@ -7,8 +7,8 @@ interface Props {
   id: string;
   created_date: string;
   shouldAutoFocus: boolean;
-  onUpdate: ((values: EnumIdeaItem) => void);
-  onDeleteIdea: (() => void);
+  onUpdate: (values: EnumIdeaItem) => void;
+  onDeleteIdea: () => void;
 }
 
 enum KeyTypes {
@@ -62,7 +62,7 @@ class IdeaItem extends Component<Props, EnumIdeaItem> {
       <fieldset>
         <textarea
           className={styles.titleField}
-          onChange={e => this.handleUpdateState(e, "title")}
+          onChange={e => this.handleUpdateState(e, 'title')}
           onBlur={this.saveValues}
           value={title}
           data-test="title-field"
@@ -71,7 +71,7 @@ class IdeaItem extends Component<Props, EnumIdeaItem> {
         />
         <textarea
           className={styles.bodyField}
-          onChange={e => this.handleUpdateState(e, "body")}
+          onChange={e => this.handleUpdateState(e, 'body')}
           onBlur={this.saveValues}
           value={body}
           maxLength={140}
@@ -82,7 +82,7 @@ class IdeaItem extends Component<Props, EnumIdeaItem> {
           title="Delete idea"
           className={styles.deleteButton}
           onClick={this.props.onDeleteIdea}
-          data-test="delete-button"
+          data-testid="delete-button"
         />
       </fieldset>
     );

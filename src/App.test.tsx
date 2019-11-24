@@ -1,74 +1,46 @@
-import React from "react";
-import { mount } from "enzyme";
-import App from "./App";
+import React from 'react';
+import { render, fireEvent, waitForElement } from '@testing-library/react';
+import App from './App';
 
-it("CREATES a new blank idea when the add button is clicked and autofocuses the title field", () => {
-  const wrapper = mount(<App />);
+it('can CREATE a new blank idea when the add button is clicked and auto focuses the title field', () => {
+  const { getAllByTestId, getByTestId, getAllByPlaceholderText } = render(
+    <App />
+  );
 
-  expect(wrapper.find("IdeaItem").length).toBe(2);
+  expect(getAllByTestId('idea-item').length).toBe(2);
 
-  const button = wrapper.find('[data-test="add-button"]');
+  fireEvent.click(getByTestId('add-button'));
 
-  button.props().onClick();
+  expect(getAllByTestId('idea-item').length).toBe(3);
 
-  wrapper.update();
+  expect(getAllByPlaceholderText('Add title...')[0]).toHaveFocus();
 
-  expect(wrapper.find("IdeaItem").length).toBe(3);
-
-  const firstItem = wrapper.find("IdeaItem").at(0);
-  const titleField = firstItem.find('[data-test="title-field"]');
-  const bodyField = firstItem.find('[data-test="body-field"]');
-
-  expect(titleField.props().value).toBeFalsy();
-  expect(bodyField.props().value).toBeFalsy();
-  expect(titleField.props().autoFocus).toBe(true);
+  expect(getAllByPlaceholderText('Add title...')[0]).toHaveValue('');
+  expect(getAllByPlaceholderText('Add body...')[0]).toHaveValue('');
 });
 
-it("UPDATES the `ideasData` when an idea has been updated", () => {
-  const wrapper = mount(<App />);
+it('can UPDATE an idea in the list', () => {
+  const { getAllByTestId, getByText } = render(<App />);
 
-  const originalTitle = "Come up with more ideas!";
-  const newTitle = "Come up with more BETTER ideas!";
+  expect(getAllByTestId('idea-item')[0]).toHaveTextContent('Learn TypeScript');
 
-  expect(wrapper.state().ideasData[1].title).toBe(originalTitle);
-
-  const secondItem = wrapper.find("IdeaItem").at(1);
-  const secondItemTitleField = secondItem.find('[data-test="title-field"]');
-
-  secondItemTitleField.props().onChange({
-    target: {
-      value: newTitle
-    }
+  fireEvent.change(getByText('Learn TypeScript'), {
+    target: { value: 'Learn Go!' }
   });
 
-  secondItemTitleField.props().onBlur();
-
-  expect(wrapper.state().ideasData[1].title).toBe(newTitle);
+  expect(getAllByTestId('idea-item')[0]).toHaveTextContent('Learn Go!');
 });
 
-it("DELETES an idea when the delete button is clicked", () => {
-  const wrapper = mount(<App />);
+it('can DELETE an idea when the delete button is clicked', () => {
+  const { getAllByTestId, getByTestId } = render(<App />);
 
-  expect(wrapper.find("IdeaItem").length).toBe(2);
-  expect(
-    wrapper
-      .find("IdeaItem")
-      .at(0)
-      .props().title
-  ).toBe("Learn TypeScript");
+  expect(getAllByTestId('idea-item').length).toBe(2);
+  expect(getAllByTestId('idea-item')[0]).toHaveTextContent('Learn TypeScript');
 
-  const button = wrapper.find('[data-test="delete-button"]').at(0);
+  fireEvent.click(getAllByTestId('delete-button')[0]);
 
-  button.props().onClick();
-
-  wrapper.update();
-
-  expect(wrapper.find("IdeaItem").length).toBe(1);
-
-  expect(
-    wrapper
-      .find("IdeaItem")
-      .at(0)
-      .props().title
-  ).toBe("Come up with more ideas!");
+  expect(getAllByTestId('idea-item').length).toBe(1);
+  expect(getAllByTestId('idea-item')[0]).toHaveTextContent(
+    'Come up with more ideas'
+  );
 });

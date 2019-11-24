@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import IdeaItem from "./IdeaItem";
-import styles from "./IdeasList.module.css";
+import React, { Component } from 'react';
+import IdeaItem from './IdeaItem';
+import styles from './IdeasList.module.css';
 
 interface props {
   data: EnumIdeaItems;
-  onUpdate: ((values: EnumIdeaItem) => void);
-  onAddNewIdea: (() => void);
-  onDeleteIdea: ((id: string) => void);
+  onUpdate: (values: EnumIdeaItem) => void;
+  onAddNewIdea: () => void;
+  onDeleteIdea: (id: string) => void;
 }
 
 class IdeasList extends Component<props> {
@@ -25,7 +25,7 @@ class IdeasList extends Component<props> {
           className={styles.addButton}
           onClick={this.props.onAddNewIdea}
           title="Add a new idea"
-          data-test="add-button"
+          data-testid="add-button"
         >
           <span className={styles.addButtonIcon} />
         </button>
@@ -39,7 +39,7 @@ class IdeasList extends Component<props> {
     const listElements = data.map(({ id, title, body, created_date }, i) => {
       const shouldAutoFocus = !title && i === 0;
       return (
-        <li key={id}>
+        <li key={id} data-testid="idea-item">
           <IdeaItem
             title={title}
             body={body}
@@ -55,11 +55,7 @@ class IdeasList extends Component<props> {
 
     listElements.unshift(this.renderAddNewItemButton());
 
-    return (
-      <ol className={styles.list} data-test="ideas-list">
-        {listElements}
-      </ol>
-    );
+    return <ol className={styles.list}>{listElements}</ol>;
   }
 }
 
