@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import IdeaItem from './IdeaItem';
+import { IdeaItemInterface } from './IdeaItemInterface';
 import ideasDataFixture from '../../api/ideas.fixture';
 import styles from './IdeasList.module.css';
 
 const IdeasList = () => {
-  const [ideasData, setIdeasData] = useState(ideasDataFixture);
+  const [ideasData, setIdeasData] = useState<Array<IdeaItemInterface>>([]);
+
+  useEffect(() => {
+    // Simulating fetching data...
+    setTimeout(() => {
+      setIdeasData(ideasDataFixture);
+    }, 500);
+  }, []);
 
   const handleAddIdea = () => {
     const cloned = ideasData.slice(0);
@@ -18,8 +26,10 @@ const IdeasList = () => {
     setIdeasData(cloned);
   };
 
-  const handleUpdate = (values: EnumIdeaItem) => {
-    const index = ideasData.findIndex(({ id }) => id === values.id);
+  const handleUpdate = (values: IdeaItemInterface) => {
+    const index = ideasData.findIndex(
+      ({ id }: IdeaItemInterface) => id === values.id
+    );
 
     if (index > -1) {
       const cloned = ideasData.slice(0);
@@ -29,7 +39,9 @@ const IdeasList = () => {
   };
 
   const handleDeleteIdea = (selectedId: string) => {
-    const index = ideasData.findIndex(({ id }) => id === selectedId);
+    const index = ideasData.findIndex(
+      ({ id }: IdeaItemInterface) => id === selectedId
+    );
 
     if (index > -1) {
       const cloned = ideasData.slice(0);
@@ -54,22 +66,24 @@ const IdeasList = () => {
   };
 
   const renderListItems = () => {
-    const listItems = ideasData.map(({ id, title, body, created_date }, i) => {
-      const shouldAutoFocus = !title && i === 0;
-      return (
-        <li key={id} data-testid="idea-item">
-          <IdeaItem
-            title={title}
-            body={body}
-            id={id}
-            created_date={created_date}
-            onUpdate={values => handleUpdate(values)}
-            shouldAutoFocus={shouldAutoFocus}
-            onDeleteIdea={() => handleDeleteIdea(id)}
-          />
-        </li>
-      );
-    });
+    const listItems = ideasData.map(
+      ({ id, title, body, created_date }: IdeaItemInterface, i: Number) => {
+        const shouldAutoFocus = !title && i === 0;
+        return (
+          <li key={id} data-testid="idea-item">
+            <IdeaItem
+              title={title}
+              body={body}
+              id={id}
+              created_date={created_date}
+              onUpdate={values => handleUpdate(values)}
+              shouldAutoFocus={shouldAutoFocus}
+              onDeleteIdea={() => handleDeleteIdea(id)}
+            />
+          </li>
+        );
+      }
+    );
 
     listItems.unshift(renderAddNewItemButton());
 

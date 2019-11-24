@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from './IdeasList.module.css';
+import { IdeaItemInterface } from './IdeaItemInterface';
 
 interface IdeaItemProps {
   title: string;
@@ -7,7 +8,7 @@ interface IdeaItemProps {
   id: string;
   created_date: string;
   shouldAutoFocus: boolean;
-  onUpdate: (values: EnumIdeaItem) => void;
+  onUpdate: (values: IdeaItemInterface) => void;
   onDeleteIdea: () => void;
 }
 
