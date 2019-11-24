@@ -29,13 +29,13 @@ it('can UPDATE an idea in the list', async () => {
 
   await waitForElement(() => getAllByTestId('idea-item'));
 
-  expect(getAllByTestId('idea-item')[0]).toHaveTextContent('Learn TypeScript');
+  expect(getAllByTestId('idea-item')[1]).toHaveTextContent('Learn TypeScript');
 
   fireEvent.change(getByText('Learn TypeScript'), {
     target: { value: 'Learn Go!' }
   });
 
-  expect(getAllByTestId('idea-item')[0]).toHaveTextContent('Learn Go!');
+  expect(getAllByTestId('idea-item')[1]).toHaveTextContent('Learn Go!');
 });
 
 it('can DELETE an idea when the delete button is clicked', async () => {
@@ -44,12 +44,42 @@ it('can DELETE an idea when the delete button is clicked', async () => {
   await waitForElement(() => getAllByTestId('idea-item'));
 
   expect(getAllByTestId('idea-item').length).toBe(2);
-  expect(getAllByTestId('idea-item')[0]).toHaveTextContent('Learn TypeScript');
+  expect(getAllByTestId('idea-item')[1]).toHaveTextContent('Learn TypeScript');
 
-  fireEvent.click(getAllByTestId('delete-button')[0]);
+  fireEvent.click(getAllByTestId('delete-button')[1]);
 
   expect(getAllByTestId('idea-item').length).toBe(1);
   expect(getAllByTestId('idea-item')[0]).toHaveTextContent(
     'Come up with more ideas'
   );
+});
+
+it('can sort by `title` or `created_date`', async () => {
+  const { getAllByTestId, getByTestId } = render(<App />);
+
+  await waitForElement(() => getAllByTestId('idea-item'));
+
+  // default is title
+  expect(getAllByTestId('idea-item')[0]).toHaveTextContent(
+    'Come up with more ideas'
+  );
+  expect(getAllByTestId('idea-item')[1]).toHaveTextContent('Learn TypeScript');
+
+  fireEvent.change(getByTestId('sort-options'), {
+    target: { value: 'created_date' }
+  });
+
+  expect(getAllByTestId('idea-item')[1]).toHaveTextContent(
+    'Come up with more ideas'
+  );
+  expect(getAllByTestId('idea-item')[0]).toHaveTextContent('Learn TypeScript');
+
+  fireEvent.change(getByTestId('sort-options'), {
+    target: { value: 'title' }
+  });
+
+  expect(getAllByTestId('idea-item')[0]).toHaveTextContent(
+    'Come up with more ideas'
+  );
+  expect(getAllByTestId('idea-item')[1]).toHaveTextContent('Learn TypeScript');
 });

@@ -1,18 +1,53 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import IdeaItem from './IdeaItem';
 import { IdeaItemInterface } from './IdeaItemInterface';
 import ideasDataFixture from '../../api/ideas.fixture';
-import styles from './IdeasList.module.css';
+import classes from './IdeasList.module.css';
+
+export type SortTypes = 'title' | 'created_date';
 
 const IdeasList = () => {
   const [ideasData, setIdeasData] = useState<Array<IdeaItemInterface>>([]);
+  const [sortKey, setSortKey] = useState<SortTypes>('title');
+  const [dataFetched, setDataFetched] = useState(false);
+
+  const setSortedIdeasData = useCallback(
+    (data: IdeaItemInterface[]) => {
+      const cloned = data.slice(0);
+
+      const sorted = cloned.sort((a, b) => {
+        const v1 = a[sortKey].toLowerCase();
+        const v2 = b[sortKey].toLowerCase();
+
+        if (v1 < v2) {
+          return -1;
+        }
+
+        if (v1 > v2) {
+          return 1;
+        }
+
+        return 0;
+      });
+
+      setIdeasData(sorted);
+    },
+    [sortKey]
+  );
+
+  useEffect(() => {
+    setSortedIdeasData(ideasData);
+  }, [sortKey]);
 
   useEffect(() => {
     // Simulating fetching data...
-    setTimeout(() => {
-      setIdeasData(ideasDataFixture);
-    }, 500);
-  }, []);
+    if (!dataFetched) {
+      setTimeout(() => {
+        setSortedIdeasData(ideasDataFixture);
+        setDataFetched(true);
+      }, 500);
+    }
+  }, [setSortedIdeasData]);
 
   const handleAddIdea = () => {
     const cloned = ideasData.slice(0);
@@ -34,7 +69,7 @@ const IdeasList = () => {
     if (index > -1) {
       const cloned = ideasData.slice(0);
       cloned[index] = Object.assign({}, cloned[index], values);
-      setIdeasData(cloned);
+      setSortedIdeasData(cloned);
     }
   };
 
@@ -46,7 +81,7 @@ const IdeasList = () => {
     if (index > -1) {
       const cloned = ideasData.slice(0);
       cloned.splice(index, 1);
-      setIdeasData(cloned);
+      setSortedIdeasData(cloned);
     }
   };
 
@@ -54,12 +89,12 @@ const IdeasList = () => {
     return (
       <li key="addBtn">
         <button
-          className={styles.addButton}
+          className={classes.addButton}
           onClick={handleAddIdea}
           title="Add a new idea"
           data-testid="add-button"
         >
-          <span className={styles.addButtonIcon} />
+          <span className={classes.addButtonIcon} />
         </button>
       </li>
     );
@@ -67,7 +102,7 @@ const IdeasList = () => {
 
   const renderListItems = () => {
     const listItems = ideasData.map(
-      ({ id, title, body, created_date }: IdeaItemInterface, i: Number) => {
+      ({ id, title, body, created_date }, i: Number) => {
         const shouldAutoFocus = !title && i === 0;
         return (
           <li key={id} data-testid="idea-item">
@@ -90,7 +125,26 @@ const IdeasList = () => {
     return listItems;
   };
 
-  return <ol className={styles.list}>{renderListItems()}</ol>;
+  return (
+    <>
+      <div className={classes.sortDropDown}>
+        <label htmlFor="sort">Sort by: </label>
+        <select
+          value={sortKey}
+          id="sort"
+          onChange={e => {
+            const value: any = e.target.value;
+            setSortKey(value);
+          }}
+          data-testid="sort-options"
+        >
+          <option value="title">Title</option>
+          <option value="created_date">Created date</option>
+        </select>
+      </div>
+      <ol className={classes.list}>{renderListItems()}</ol>
+    </>
+  );
 };
 
 export default IdeasList;
