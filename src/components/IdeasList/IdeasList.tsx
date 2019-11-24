@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import IdeaItem from './IdeaItem';
 import { IdeaItemInterface } from './IdeaItemInterface';
 import ideasDataFixture from '../../api/ideas.fixture';
+import { getRandomColor } from '../../utils';
 import classes from './IdeasList.module.css';
 
 export type SortTypes = 'title' | 'created_date';
@@ -37,7 +38,7 @@ const IdeasList = () => {
 
   useEffect(() => {
     setSortedIdeasData(ideasData);
-  }, [sortKey]);
+  }, [sortKey, setSortedIdeasData]);
 
   useEffect(() => {
     // Simulating fetching data...
@@ -47,13 +48,14 @@ const IdeasList = () => {
         setDataFetched(true);
       }, 500);
     }
-  }, [setSortedIdeasData]);
+  }, [setSortedIdeasData, dataFetched]);
 
   const handleAddIdea = () => {
     const cloned = ideasData.slice(0);
     cloned.unshift({
       id: Date.now().toString(),
       created_date: new Date().toISOString(),
+      color: getRandomColor(),
       title: '',
       body: ''
     });
@@ -102,10 +104,14 @@ const IdeasList = () => {
 
   const renderListItems = () => {
     const listItems = ideasData.map(
-      ({ id, title, body, created_date }, i: Number) => {
+      ({ id, title, body, created_date, color }, i: Number) => {
         const shouldAutoFocus = !title && i === 0;
         return (
-          <li key={id} data-testid="idea-item">
+          <li
+            key={id}
+            data-testid="idea-item"
+            style={{ backgroundColor: color }}
+          >
             <IdeaItem
               title={title}
               body={body}
