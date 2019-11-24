@@ -1,26 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import IdeaItem from './IdeaItem';
+import ideasDataFixture from '../../api/ideas.fixture';
 import styles from './IdeasList.module.css';
 
-interface IdeasListProps {
-  data: EnumIdeaItems;
-  onUpdate: (values: EnumIdeaItem) => void;
-  onAddNewIdea: () => void;
-  onDeleteIdea: (id: string) => void;
-}
+const IdeasList = () => {
+  const [ideasData, setIdeasData] = useState(ideasDataFixture);
 
-const IdeasList = ({
-  data = [],
-  onUpdate,
-  onDeleteIdea,
-  onAddNewIdea
-}: IdeasListProps) => {
-  const handleUpdate = (values: EnumIdeaItem) => {
-    onUpdate(values);
+  const handleAddIdea = () => {
+    const cloned = ideasData.slice(0);
+    cloned.unshift({
+      id: Date.now().toString(),
+      created_date: new Date().toISOString(),
+      title: '',
+      body: ''
+    });
+
+    setIdeasData(cloned);
   };
 
-  const handleDeleteIdea = (id: string) => {
-    onDeleteIdea(id);
+  const handleUpdate = (values: EnumIdeaItem) => {
+    const index = ideasData.findIndex(({ id }) => id === values.id);
+
+    if (index > -1) {
+      const cloned = ideasData.slice(0);
+      cloned[index] = Object.assign({}, cloned[index], values);
+      setIdeasData(cloned);
+    }
+  };
+
+  const handleDeleteIdea = (selectedId: string) => {
+    const index = ideasData.findIndex(({ id }) => id === selectedId);
+
+    if (index > -1) {
+      const cloned = ideasData.slice(0);
+      cloned.splice(index, 1);
+      setIdeasData(cloned);
+    }
   };
 
   const renderAddNewItemButton = () => {
@@ -28,7 +43,7 @@ const IdeasList = ({
       <li key="addBtn">
         <button
           className={styles.addButton}
-          onClick={onAddNewIdea}
+          onClick={handleAddIdea}
           title="Add a new idea"
           data-testid="add-button"
         >
@@ -39,7 +54,7 @@ const IdeasList = ({
   };
 
   const renderListItems = () => {
-    const listItems = data.map(({ id, title, body, created_date }, i) => {
+    const listItems = ideasData.map(({ id, title, body, created_date }, i) => {
       const shouldAutoFocus = !title && i === 0;
       return (
         <li key={id} data-testid="idea-item">
