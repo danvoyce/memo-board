@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import styles from './IdeasList.module.css';
 
-interface Props {
+interface IdeaItemProps {
   title: string;
   body: string;
   id: string;
@@ -11,82 +11,55 @@ interface Props {
   onDeleteIdea: () => void;
 }
 
-enum KeyTypes {
+const IdeaItem = ({
   title,
   body,
   id,
-  created_date
-}
+  created_date,
+  shouldAutoFocus,
+  onUpdate,
+  onDeleteIdea
+}: IdeaItemProps) => {
+  const [titleState, setTitleState] = useState(title);
+  const [bodyState, setBodyState] = useState(body);
 
-class IdeaItem extends Component<Props, EnumIdeaItem> {
-  constructor(props: Props) {
-    super(props);
-
-    const { title, body, id, created_date } = props;
-
-    this.state = {
-      title,
-      body,
+  const saveValues = () => {
+    onUpdate({
+      title: titleState,
+      body: bodyState,
       id,
       created_date
-    };
-  }
-
-  handleUpdateState({ target }: { target: { value: string } }, key: string) {
-    const { value } = target;
-
-    const newState = Object.assign({}, this.state, { [key]: value });
-
-    this.setState(newState);
-
-    /* Note:
-      TypeScript was freaking out when attempting to do the below `this.setState({...})`.
-      I believe it doesn't like that we can set the key to an unknown string,
-      which then could potentially break the `EnumIdeaItem` interface.
-      So I resorted to the above, although this still allows an unknown string as the key 🤨
-    */
-
-    // this.setState({
-    //   [key]: value
-    // });
-  }
-
-  saveValues = () => {
-    const { title, body, id, created_date } = this.state;
-    this.props.onUpdate({ title, body, id, created_date });
+    });
   };
 
-  render() {
-    const { title, body } = this.state;
-    return (
-      <fieldset>
-        <textarea
-          className={styles.titleField}
-          onChange={e => this.handleUpdateState(e, 'title')}
-          onBlur={this.saveValues}
-          value={title}
-          data-test="title-field"
-          autoFocus={this.props.shouldAutoFocus}
-          placeholder="Add title..."
-        />
-        <textarea
-          className={styles.bodyField}
-          onChange={e => this.handleUpdateState(e, 'body')}
-          onBlur={this.saveValues}
-          value={body}
-          maxLength={140}
-          data-test="body-field"
-          placeholder="Add body..."
-        />
-        <button
-          title="Delete idea"
-          className={styles.deleteButton}
-          onClick={this.props.onDeleteIdea}
-          data-testid="delete-button"
-        />
-      </fieldset>
-    );
-  }
-}
+  return (
+    <fieldset>
+      <textarea
+        className={styles.titleField}
+        onChange={e => setTitleState(e.target.value)}
+        onBlur={saveValues}
+        value={titleState}
+        data-test="title-field"
+        autoFocus={shouldAutoFocus}
+        placeholder="Add title..."
+      />
+      <textarea
+        className={styles.bodyField}
+        onChange={e => setBodyState(e.target.value)}
+        onBlur={saveValues}
+        value={bodyState}
+        maxLength={140}
+        data-test="body-field"
+        placeholder="Add body..."
+      />
+      <button
+        title="Delete idea"
+        className={styles.deleteButton}
+        onClick={onDeleteIdea}
+        data-testid="delete-button"
+      />
+    </fieldset>
+  );
+};
 
 export default IdeaItem;

@@ -2,7 +2,7 @@ import React from 'react';
 import IdeaItem from './IdeaItem';
 import styles from './IdeasList.module.css';
 
-interface props {
+interface IdeasListProps {
   data: EnumIdeaItems;
   onUpdate: (values: EnumIdeaItem) => void;
   onAddNewIdea: () => void;
@@ -14,7 +14,7 @@ const IdeasList = ({
   onUpdate,
   onDeleteIdea,
   onAddNewIdea
-}: props) => {
+}: IdeasListProps) => {
   const handleUpdate = (values: EnumIdeaItem) => {
     onUpdate(values);
   };
