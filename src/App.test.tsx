@@ -54,12 +54,12 @@ it('can DELETE an idea when the delete button is clicked', async () => {
   );
 });
 
-it('can sort by `title` or `created_date`', async () => {
+it('can SORT by `title` or `created_date`', async () => {
   const { getAllByTestId, getByTestId } = render(<App />);
 
   await waitForElement(() => getAllByTestId('idea-item'));
 
-  // default is title
+  // default sort is title
   expect(getAllByTestId('idea-item')[0]).toHaveTextContent(
     'Come up with more ideas'
   );

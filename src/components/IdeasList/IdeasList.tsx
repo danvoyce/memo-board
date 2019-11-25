@@ -38,11 +38,12 @@ const IdeasList = () => {
 
   useEffect(() => {
     setSortedIdeasData(ideasData);
-  }, [sortKey, setSortedIdeasData]);
+  }, [setSortedIdeasData]);
 
   useEffect(() => {
-    // Simulating fetching data...
     if (!dataFetched) {
+      // Simulating the UX of fetching data...
+      // Could be replaced with a fetch or thunk action call if using redux
       setTimeout(() => {
         setSortedIdeasData(ideasDataFixture);
         setDataFetched(true);

@@ -1,4 +1,4 @@
-export const getRandomColor = () => {
+export const getRandomColor = (): string => {
   const colors = [
     '#ab0d86',
     '#ffe107',
