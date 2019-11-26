@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import IdeaItem from './IdeaItem';
 import { IdeaItemInterface } from './IdeaItemInterface';
 import ideasDataFixture from '../../api/ideas.fixture';
@@ -12,44 +12,33 @@ const IdeasList = () => {
   const [sortKey, setSortKey] = useState<SortTypes>('title');
   const [dataFetched, setDataFetched] = useState(false);
 
-  const setSortedIdeasData = useCallback(
-    (data: IdeaItemInterface[]) => {
-      const cloned = data.slice(0);
+  const sortedIdeasData = useMemo(() => {
+    return Array.from(ideasData).sort((a, b) => {
+      const v1 = a[sortKey].toLowerCase();
+      const v2 = b[sortKey].toLowerCase();
 
-      const sorted = cloned.sort((a, b) => {
-        const v1 = a[sortKey].toLowerCase();
-        const v2 = b[sortKey].toLowerCase();
+      if (v1 < v2) {
+        return -1;
+      }
 
-        if (v1 < v2) {
-          return -1;
-        }
+      if (v1 > v2) {
+        return 1;
+      }
 
-        if (v1 > v2) {
-          return 1;
-        }
-
-        return 0;
-      });
-
-      setIdeasData(sorted);
-    },
-    [sortKey]
-  );
-
-  useEffect(() => {
-    setSortedIdeasData(ideasData);
-  }, [setSortedIdeasData]);
+      return 0;
+    });
+  }, [sortKey, ideasData]);
 
   useEffect(() => {
     if (!dataFetched) {
       // Simulating the UX of fetching data...
       // Could be replaced with a fetch or thunk action call if using redux
       setTimeout(() => {
-        setSortedIdeasData(ideasDataFixture);
+        setIdeasData(ideasDataFixture);
         setDataFetched(true);
       }, 500);
     }
-  }, [setSortedIdeasData, dataFetched]);
+  }, [dataFetched]);
 
   const handleAddIdea = () => {
     const cloned = ideasData.slice(0);
@@ -72,7 +61,7 @@ const IdeasList = () => {
     if (index > -1) {
       const cloned = ideasData.slice(0);
       cloned[index] = Object.assign({}, cloned[index], values);
-      setSortedIdeasData(cloned);
+      setIdeasData(cloned);
     }
   };
 
@@ -84,7 +73,7 @@ const IdeasList = () => {
     if (index > -1) {
       const cloned = ideasData.slice(0);
       cloned.splice(index, 1);
-      setSortedIdeasData(cloned);
+      setIdeasData(cloned);
     }
   };
 
@@ -104,7 +93,7 @@ const IdeasList = () => {
   };
 
   const renderListItems = () => {
-    const listItems = ideasData.map(
+    const listItems = sortedIdeasData.map(
       ({ id, title, body, created_date, color }, i: Number) => {
         const shouldAutoFocus = !title && i === 0;
         return (
